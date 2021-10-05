@@ -4,13 +4,13 @@ pipeline
   stages
   {
     stage('scm checkout')
-    { steps { git branch: 'master', url: 'https://github.com/prakashk0301/maven-project.git' } }
+    { steps { git branch: 'master', url: 'https://github.com/mewvisudha/maven-project.git' } }
 
     stage('Code build && Execute Unit Test case')
     { parallel 
      { 
        stage ('Execute Unit Test case')
-       { steps { withMaven(jdk: 'JAVA_HOME', maven: 'MAVEN_HOME') 
+       { steps { withMaven(jdk: 'LocalJDK', maven: 'LocalMaven')
                 { sh 'mvn test' } 
                } 
        }
@@ -19,7 +19,7 @@ pipeline
        { steps 
         { withSonarQubeEnv(credentialsId: 'sonar', installationName: 'sonar')
         
-          { withMaven(jdk: 'JAVA_HOME', maven: 'MAVEN_HOME')      
+          { withMaven(jdk: 'LocalJDK', maven: 'LocalMaven')     
             { sh 'mvn package sonar:sonar' } } }
             
        }
